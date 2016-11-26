@@ -19,7 +19,7 @@ def TryDiz(host):
         if testssh == 0:
             log.debug(' SSH open @ %s' % host)
             return True
-        elif testtel == 0:
+        elif testtel == 0 or 106:
             log.debug(' Telnet open @ %s' % host)
             return False
         else:
@@ -90,5 +90,5 @@ def main():
 
 if __name__ == '__main__':
     log = logging.getLogger('plejCON')
-    logging.basicConfig(level=20)
+    logging.basicConfig(level=10)
     main()
