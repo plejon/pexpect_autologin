@@ -21,7 +21,7 @@ def TryDiz(host):
             log.debug(' Telnet open @ %s' % host)
             return False
         else:
-            log.warning(' Could not verify is ssh/telnet service was open on "%s"' % host)
+            log.warning(' Could not verify if ssh/telnet service was open on "%s"' % host)
             sys.exit()
     except:
         sys.exit()
