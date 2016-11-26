@@ -63,19 +63,16 @@ def main():
         x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF])
         try:
             if x == 1 or 2:
-                log.debug(' Expecting username prompt "%s"' % host)
                 tel.sendline(username)
                 log.debug(' Sent username "%s"' % host)
-                log.debug(' Expecting password prompt "%s"' % host)
-                tel.expect('(?i)password')
-                log.debug(' Got password prompt "%s"' % host)
-                log.debug(' Sending password "%s"' % host)
+                tel.expect('(?i)password', timeout=5)
                 tel.sendline(password)
                 log.debug(' Sent password "%s"' % host)
+
         except:
-            print tel.before
-            sys.exit()
-        
+            log.error(' could probalby not send password. Hit return and enter pass')
+            tel.interact()
+            
     else:
         log.warning(' Telnet/SSH could not connect to "%s"' % host)
         sys.exit()
