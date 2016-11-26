@@ -21,7 +21,7 @@ def TryDiz(host):
             log.debug(' Telnet open @ %s' % host)
             return False
         else:
-            log.warning(' Telnet/SSH not open on "%s"' % host)
+            log.warning(' Could not verify is ssh/telnet service was open on "%s"' % host)
             sys.exit()
     except:
         sys.exit()
@@ -41,17 +41,15 @@ def main():
     if x == True:
         log.info(' Spawning SSH @ "%s"' % host)
         ssh = pexpect.spawn('ssh "%s"' % host)
-        time.sleep(1)
         x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT],1)
         if x == 0:
-            log.debug(' Auto adding SSH key for "%s"' % host)
+            log.info(' Auto adding SSH key for "%s"' % host)
             ssh.sendline('yes')
             x = ssh.expect(['continue connecting','assword',pexpect.EOF])
         if x == 1:
             log.debug(' Sending password "%s"' % host)
             ssh.sendline(password)
         elif x == 2:
-            log.warning('\n\nSomething did not work, plz interact.\n\n')
             print ssh.before
             sys.exit()
         elif x == 3:
@@ -60,7 +58,6 @@ def main():
     elif x == False:
         log.info(' Spawning Telnet @ "%s"' % host)
         tel = pexpect.spawn('telnet "%s"' % host)
-        time.sleep(1)
         x = tel.expect(['(?i)username', '(?i)login'])
         if x == 1 or 2:
             log.debug(' Sending username "%s"' % host)
@@ -90,5 +87,5 @@ def main():
 
 if __name__ == '__main__':
     log = logging.getLogger('plejCON')
-    logging.basicConfig(level=10)
+    logging.basicConfig(level=20)
     main()
