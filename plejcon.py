@@ -49,6 +49,7 @@ def main():
             ssh.sendline('yes')
             x = ssh.expect(['continue connecting','assword',pexpect.EOF])
         if x == 1:
+            time.sleep(1)
             log.debug(' Sending password "%s"' % host)
             ssh.sendline(password)
         elif x == 2:
