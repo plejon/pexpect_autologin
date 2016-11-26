@@ -2,9 +2,11 @@
 try:
     import pexpect
 except:
-    print('module "pexpect" not found.\n"apt-get install python-pexpect"\nor\n "pip install pexpect"\nfor install\nscript does not work on windows :(')
+    print('module "pexpect" not found.')
+    import sys
+    sys.exit()
 
-import socket, sys, os, logging, time
+import socket, os, sys, logging, time
 
 def TryDiz(host):
     try:
@@ -71,7 +73,7 @@ def main():
         sys.exit()
 
     try:
-        if 'ssh' or 'tel' in locals():
+        if 'ssh' in locals():
             log.debug(' Trying to enable user interaction "%s"' % host)
             ssh.interact()
             sys.exit()
