@@ -12,9 +12,7 @@ def TryDiz(host):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)
-        log.debug(' trying ssh socket')
         testssh = sock.connect_ex((host, 22))
-        log.debug(' trying telnet socket')
         testtel = sock.connect_ex((host, 23))
         if testssh == 0:
             log.debug(' SSH open @ %s' % host)
@@ -26,6 +24,7 @@ def TryDiz(host):
             log.warning(' Could not verify if ssh/telnet service was open on "%s"' % host)
             sys.exit()
     except:
+        log.error(' Connection failed @ %s' % host)
         sys.exit()
 
 def main():
