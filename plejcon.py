@@ -60,13 +60,21 @@ def main():
     elif x == False:
         log.info(' Spawning Telnet @ "%s"' % host)
         tel = pexpect.spawn('telnet "%s"' % host)
-        x = tel.expect(['(?i)username', '(?i)login'])
-        if x == 1 or 2:
-            log.debug(' Sending username "%s"' % host)
-            tel.sendline(username)
-        tel.expect('(?i)password')
-        log.debug(' Sending password "%s"' % host)
-        tel.sendline(password)
+        x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF])
+        try:
+            if x == 1 or 2:
+                log.debug(' Expecting username prompt "%s"' % host)
+                tel.sendline(username)
+                log.debug(' Sent username "%s"' % host)
+                log.debug(' Expecting password prompt "%s"' % host)
+                tel.expect('(?i)password')
+                log.debug(' Got password prompt "%s"' % host)
+                log.debug(' Sending password "%s"' % host)
+                tel.sendline(password)
+                log.debug(' Sent password "%s"' % host)
+        except:
+            print tel.before
+            sys.exit()
         
     else:
         log.warning(' Telnet/SSH could not connect to "%s"' % host)
