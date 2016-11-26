@@ -1,4 +1,4 @@
 Python Pexpect script for auto login.
-maily made for networkhosts.
+made for network-hosts.
 
 does both telnet and SSH
