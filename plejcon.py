@@ -6,7 +6,7 @@ except:
     import sys
     sys.exit()
 
-import socket, os, sys, logging, time
+import socket, os, sys, logging, time, base64
 
 def TryDiz(host):
     try:
@@ -29,13 +29,16 @@ def TryDiz(host):
 
 def main():
     if os.path.isfile('creds.txt') == True:
-        username, password = open('creds.txt', 'r').read().split(':')
+        u, p = open('creds.txt', 'r').read().split(':')
+        username = base64.b64decode(u)
+        password = base64.b64decode(p)
+
     else:
         with open('creds.txt', 'w') as x:
             print('Cannot find file with creds, enter creds to make on.')
             username = raw_input('username: ')
             password = raw_input('password: ')
-            x.write('%s:%s' % (username, password))
+            x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
 
     host = sys.argv[1]
     x = TryDiz(host)
