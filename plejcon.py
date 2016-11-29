@@ -43,8 +43,8 @@ def main():
             x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
     try:
         host = sys.argv[1]
-    except Exception, e:
-        print(e)
+    except:
+        print('No host to connect to.')
         sys.exit()
 
     x = TryDiz(host)
