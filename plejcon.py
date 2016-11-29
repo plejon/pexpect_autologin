@@ -69,7 +69,7 @@ def main():
     elif x == False:
         log.info(' Spawning Telnet @ "%s"' % host)
         tel = pexpect.spawn('telnet "%s"' % host)
-        x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF])
+        x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF, pexpect.TIMEOUT])
         try:
             if x == 0 or 1:
                 tel.send(username + '\r')
@@ -77,6 +77,12 @@ def main():
                 tel.expect('(?i)password', timeout=5)
                 tel.send(password + '\r')
                 log.debug(' Sent password "%s"' % host)
+            elif x == 2:
+                log.error(' Something went wrong :(')
+                sys.exit()
+            elif x == 3:
+                log.error(' Connection timeout')
+                sys.exit()
 
         except:
             log.error(' could probalby not send password. Hit return and enter pass')
