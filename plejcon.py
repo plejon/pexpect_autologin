@@ -99,5 +99,5 @@ def main():
 
 if __name__ == '__main__':
     log = logging.getLogger('plejCON')
-    logging.basicConfig(level=20)
+    logging.basicConfig(level=10)
     main()
