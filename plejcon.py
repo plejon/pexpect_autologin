@@ -51,11 +51,11 @@ def main():
     if x == True:
         log.info(' Spawning SSH @ "%s"' % host)
         ssh = pexpect.spawn('ssh "%s"' % host)
-        x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT],1)
+        x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT], timeout=5)
         if x == 0:
             log.info(' Auto adding SSH key for "%s"' % host)
             ssh.sendline('yes')
-            x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT],1)
+            x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT], timeout=5)
         if x == 1:
             time.sleep(1)
             log.debug(' Sending password "%s"' % host)
