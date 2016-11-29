@@ -41,8 +41,12 @@ def main():
             username = raw_input('username: ')
             password = raw_input('password: ')
             x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
+    try:
+        host = sys.argv[1]
+    except Exception, e:
+        print(e)
+        sys.exit()
 
-    host = sys.argv[1]
     x = TryDiz(host)
     if x == True:
         log.info(' Spawning SSH @ "%s"' % host)
