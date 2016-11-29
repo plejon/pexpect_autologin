@@ -13,7 +13,9 @@ def TryDiz(host):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(1)
         testssh = sock.connect_ex((host, 22))
+        log.debug(' ssh socket return: %s' % testssh)
         testtel = sock.connect_ex((host, 23))
+        log.debug(' telnet socket return: %s' % testtel)
         if testssh == 0:
             log.debug(' SSH open @ %s' % host)
             return True
