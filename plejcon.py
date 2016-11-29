@@ -55,16 +55,14 @@ def main():
         if x == 0:
             log.info(' Auto adding SSH key for "%s"' % host)
             ssh.sendline('yes')
-            x = ssh.expect(['continue connecting','assword',pexpect.EOF])
+            x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT],1)
         if x == 1:
             time.sleep(1)
             log.debug(' Sending password "%s"' % host)
             ssh.sendline(password)
-        elif x == 2:
+        elif x == 2 or 3:
             print ssh.before
             sys.exit()
-        elif x == 3:
-            pass
 
     elif x == False:
         log.info(' Spawning Telnet @ "%s"' % host)
