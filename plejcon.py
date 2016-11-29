@@ -24,7 +24,7 @@ def TryDiz(host):
             log.warning(' Could not verify if ssh/telnet service was open on "%s"' % host)
             sys.exit()
     except:
-        log.error(' Connection failed @ %s' % host)
+        log.error(' Connection timeout @ %s' % host)
         sys.exit()
 
 def main():
@@ -65,7 +65,7 @@ def main():
         tel = pexpect.spawn('telnet "%s"' % host)
         x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF])
         try:
-            if x == 1 or 2:
+            if x == 0 or 1:
                 tel.sendline(username)
                 log.debug(' Sent username "%s"' % host)
                 tel.expect('(?i)password', timeout=5)
