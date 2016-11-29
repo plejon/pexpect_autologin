@@ -66,10 +66,10 @@ def main():
         x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF])
         try:
             if x == 0 or 1:
-                tel.sendline(username)
+                tel.send(username + '\r')
                 log.debug(' Sent username "%s"' % host)
                 tel.expect('(?i)password', timeout=5)
-                tel.sendline(password)
+                tel.send(password + '\r')
                 log.debug(' Sent password "%s"' % host)
 
         except:
