@@ -1,74 +1,73 @@
-#!usr/bin/python
 try:
-    import pexpect
-except:
-    print('module "pexpect" not found.')
-    import sys
-    sys.exit()
+    import socket, os, sys, logging, time, base64, pexpect
+except Exception, e:
+    print('Could not import module: %s' % e)
 
-import socket, os, sys, logging, time, base64
-
-def TryDiz(host):
+def TestCON(host, port):
+    s = socket.socket()
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(1)
-        testssh = sock.connect_ex((host, 22))
-        log.debug(' ssh socket return: %s' % testssh)
-        testtel = sock.connect_ex((host, 23))
-        log.debug(' telnet socket return: %s' % testtel)
-        if testssh == 0:
-            log.debug(' SSH open @ %s' % host)
-            return True
-        elif testtel == 0 or 106:
-            log.debug(' Telnet open @ %s' % host)
-            return False
-        else:
-            log.warning(' Could not verify if ssh/telnet service was open on "%s"' % host)
-            sys.exit()
-    except:
-        log.error(' Connection timeout @ %s' % host)
-        sys.exit()
+        log.debug(' %s: Testing port %s' % (host, port))
+        s.settimeout(2)
+        s.connect((host, port))
+        log.debug(' %s: Port%s: Socket open' % (host, port))
+        s.close()
+        log.debug(' %s: Closing Socket' % host)
+        return True
+    except Exception, e:
+        log.error(' %s: Socket "%s"' % (host, e))
+        s.close()
+        return False
 
-def main():
+def Creds():
     if os.path.isfile('creds.txt') == True:
         u, p = open('creds.txt', 'r').read().split(':')
         username = base64.b64decode(u)
         password = base64.b64decode(p)
-
+        return (username, password)
     else:
         with open('creds.txt', 'w') as x:
             print('Cannot find file with creds, enter creds to make on.')
             username = raw_input('username: ')
             password = raw_input('password: ')
             x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
+            return (username, password)
+
+
+def Main():
     try:
         host = sys.argv[1]
-    except:
-        print('No host to connect to.')
+    except Exception, e:
+        log.error(' Host argument missing  "%s"' % e)
         sys.exit()
 
-    x = TryDiz(host)
-    if x == True:
-        log.info(' Spawning SSH @ "%s"' % host)
-        ssh = pexpect.spawn('ssh "%s"' % host)
-        x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT], timeout=5)
-        if x == 0:
-            log.info(' Auto adding SSH key for "%s"' % host)
-            ssh.sendline('yes')
-            x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT], timeout=5)
-        if x == 1:
-            time.sleep(1)
-            log.debug(' Sending password "%s"' % host)
-            ssh.sendline(password)
-        elif x == 2 or 3:
-            print ssh.before
+    username, password = Creds()
+    if TestCON(host, 22) == True:
+        try:
+            log.info(' Spawning SSH @ "%s"' % host)
+            ssh = pexpect.spawn('ssh "%s"' % host)
+            ssh.timeout=10000
+            x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT])
+            if x == 0:
+                log.info(' Auto adding SSH key for "%s"' % host)
+                ssh.sendline('yes')
+                x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT])
+            if x == 1:
+                log.debug(' Sending password "%s"' % host)
+                ssh.sendline(password)
+            elif x == 2 or 3:
+                print ssh.before
+                log.debug(' Host probaby took to long time to respond :() "%s"' % host)
+                sys.exit()
+        except Exception, e:
+            log.warning(' Could not complete ssh connection because "%s"' % e)
+            ssh.interact()
             sys.exit()
 
-    elif x == False:
-        log.info(' Spawning Telnet @ "%s"' % host)
-        tel = pexpect.spawn('telnet "%s"' % host)
-        x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF, pexpect.TIMEOUT])
+    elif TestCON(host, 23) == True:
         try:
+            log.info(' Spawning Telnet @ "%s"' % host)
+            tel = pexpect.spawn('telnet "%s"' % host)
+            x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF, pexpect.TIMEOUT])
             if x == 0 or 1:
                 tel.send(username + '\r')
                 log.debug(' Sent username "%s"' % host)
@@ -81,14 +80,9 @@ def main():
             elif x == 3:
                 log.error(' Connection timeout')
                 sys.exit()
-
-        except:
-            log.error(' could probalby not send password. Hit return and enter pass')
+        except Exception, e:
+            log.error(' Something went wrong :( "%s"' % s)
             tel.interact()
-            
-    else:
-        log.warning(' Telnet/SSH could not connect to "%s"' % host)
-        sys.exit()
 
     try:
         if 'ssh' in locals():
@@ -108,4 +102,4 @@ def main():
 if __name__ == '__main__':
     log = logging.getLogger('plejCON')
     logging.basicConfig(level=20)
-    main()
+    Main()
