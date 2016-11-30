@@ -14,7 +14,7 @@ def TestCON(host, port):
         log.debug(' %s: Closing Socket' % host)
         return True
     except Exception, e:
-        log.error(' %s: Socket "%s" on port %s' % (host, e, port))
+        log.info(' %s: Socket "%s" on port %s' % (host, e, port))
         s.close()
         return False
 
