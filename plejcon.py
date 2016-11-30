@@ -67,6 +67,7 @@ def Main():
         try:
             log.info(' Spawning Telnet @ "%s"' % host)
             tel = pexpect.spawn('telnet "%s"' % host)
+            ssh.timeout=5000
             x = tel.expect(['(?i)username', '(?i)login', pexpect.EOF, pexpect.TIMEOUT])
             if x == 0 or 1:
                 tel.send(username + '\r')
