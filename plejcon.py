@@ -26,7 +26,7 @@ def Creds():
         return (username, password)
     else:
         with open('creds.txt', 'w') as x:
-            print('Cannot find file with creds, enter creds to make on.')
+            print('Cannot find file with creds, enter creds to make one.')
             username = raw_input('username: ')
             password = raw_input('password: ')
             x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
