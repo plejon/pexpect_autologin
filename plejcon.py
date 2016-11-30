@@ -59,7 +59,7 @@ def Main():
                 log.debug(' Host probaby took to long time to respond :() "%s"' % host)
                 sys.exit()
         except Exception, e:
-            log.warning(' Could not complete ssh connection because "%s"' % e)
+            log.critical(' Could not complete ssh connection because "%s"' % e)
             ssh.interact()
             sys.exit()
 
@@ -81,7 +81,7 @@ def Main():
                 log.error(' Connection timeout')
                 sys.exit()
         except Exception, e:
-            log.error(' Something went wrong :( "%s"' % s)
+            log.critical(' Something went wrong :( "%s"' % s)
             tel.interact()
 
     try:
