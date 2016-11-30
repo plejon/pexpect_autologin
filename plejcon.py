@@ -9,7 +9,7 @@ def TestCON(host, port):
         log.debug(' %s: Testing port %s' % (host, port))
         s.settimeout(2)
         s.connect((host, port))
-        log.debug(' %s: Port%s: Socket open' % (host, port))
+        log.info(' %s: Port%s: Socket open' % (host, port))
         s.close()
         log.debug(' %s: Closing Socket' % host)
         return True
