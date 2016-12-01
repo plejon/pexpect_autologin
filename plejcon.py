@@ -1,5 +1,5 @@
 try:
-    import socket, os, sys, logging, time, base64, pexpect
+    import socket, os, sys, logging, time, base64, pexpect, getpass
 except Exception, e:
     print('Could not import module: %s' % e)
 
@@ -28,7 +28,7 @@ def Creds():
         with open('creds.txt', 'w') as x:
             print('Cannot find file with creds, enter creds to make one.')
             username = raw_input('username: ')
-            password = raw_input('password: ')
+            password = getpass.getpass('password: ')
             x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
             return (username, password)
 
