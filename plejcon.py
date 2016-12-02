@@ -46,18 +46,22 @@ def Main():
             log.info(' Spawning SSH @ "%s"' % host)
             ssh = pexpect.spawn('ssh "%s"' % host)
             ssh.timeout=10000
-            x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT])
+            x = ssh.expect(['continue connecting','assword',pexpect.EOF,pexpect.TIMEOUT, 'diffie-hellman'])
             if x == 0:
                 log.info(' Auto adding SSH key for "%s"' % host)
                 ssh.sendline('yes')
-                x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT])
+                x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT], 'diffie-hellman')
             if x == 1:
                 log.debug(' Sending password "%s"' % host)
                 ssh.sendline(password)
             elif x == 2 or 3:
                 print ssh.before
-                log.debug(' Host probaby took to long time to respond :() "%s"' % host)
+                log.error(' Host probaby took to long time to respond :() "%s"' % host)
                 sys.exit()
+            elif x == 4:
+                log.error(' Could not negotiate ssh key, try telnet manually.) "%s"' % host)
+                sys.exit()
+
         except Exception, e:
             log.critical(' Could not complete ssh connection because "%s"' % e)
             ssh.interact()
