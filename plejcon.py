@@ -50,16 +50,16 @@ def Main():
             if x == 0:
                 log.info(' Auto adding SSH key for "%s"' % host)
                 ssh.sendline('yes')
-                x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT], 'diffie-hellman')
+                x = ssh.expect(['continue connecting','assword',pexpect.EOF, pexpect.TIMEOUT, 'diffie-hellman'])
             if x == 1:
                 log.debug(' Sending password "%s"' % host)
                 ssh.sendline(password)
+            elif x == 4:
+                log.error(' Could not negotiate ssh key, try connecting with Telnet instead.')
+                sys.exit()
             elif x == 2 or 3:
                 print ssh.before
-                log.error(' Host probaby took to long time to respond :() "%s"' % host)
-                sys.exit()
-            elif x == 4:
-                log.error(' Could not negotiate ssh key, try telnet manually.) "%s"' % host)
+                log.error(' Host probaby took to long time to respond :(')
                 sys.exit()
 
         except Exception, e:
