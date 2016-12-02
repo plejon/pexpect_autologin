@@ -70,8 +70,7 @@ def Main():
     elif TestCON(host, 23) == True:
         exec_login(host, 'telnet', 23, username, password)
     else:
-        log.error(' Telnet or SSH not possible')
-        sys.exit()
+        log.error(' telnet/ssh not possible: %s' % host)
 
 if __name__ == '__main__':
     log = logging.getLogger('plejCON')
