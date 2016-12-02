@@ -30,6 +30,7 @@ def Creds():
             username = raw_input('username: ')
             password = getpass.getpass('password: ')
             x.write('%s:%s' % (base64.b64encode(username), base64.b64encode(password)))
+            log.info(' username: %s + password stored in "creds.txt"' % username)
             return (username, password)
 
 
