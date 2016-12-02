@@ -63,7 +63,7 @@ def Main():
 	except Exception, e:
 		log.error(' Host argument missing  "%s"' % e)
 		sys.exit()
-
+		
 	username, password = Creds()
 	if TestCON(host, 22) == True:
 		exec_login(host, 'ssh', 22, username, password)
