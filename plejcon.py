@@ -27,7 +27,8 @@ def Creds():
             return (username, password)
 
 def exec_login(host, service, port, username, password):
-    ex = ['continue connecting', '(?i)username', '(?i)login:', '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT]
+    ex = ['continue connecting', '(?i)username', '(?i)login:',
+          '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT]
     try:
         log.info(' Connecting to "%s"' % host)
         conn = pexpect.spawn('%s %s' % (service, host))
