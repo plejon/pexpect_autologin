@@ -49,7 +49,7 @@ def exec_login(host, service, port, username, password):
 		if x == 3:
 			conn.send(password + '\r')
 		elif x == 4 or 5 or 6:
-			log.error(' EoF or timeout "%s"' % host)
+			log.error(' EoF or timeout @ "%s"' % host)
 			sys.exit()
 		conn.interact()
 		sys.exit()
