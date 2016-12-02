@@ -1,4 +1,4 @@
-import socket, os, sys, logging, time, base64, pexpect, getpass
+import socket, os, sys, logging, base64, pexpect, getpass
 
 def TestCON(host, port):
 	s = socket.socket()
