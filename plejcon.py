@@ -31,7 +31,9 @@ def exec_login(host, service, port, username, password):
           '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT]
     try:
         ptr = socket.gethostbyaddr(host)
-        log.info(' Connecting to Host: %s  PTR: %s"' % (host, ptr[0]))
+        log.info(' Connecting...')
+        log.info(' Host: %s' % host)
+        log.info(' PTR:  %s' % ptr[0])
         conn = pexpect.spawn('%s %s' % (service, host))
         conn.timeout=10000
         x = conn.expect(ex)
