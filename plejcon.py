@@ -62,7 +62,7 @@ def Main():
     try:
         host = sys.argv[1]
     except Exception, e:
-        log.error(' Host argument missing  "%s"' % e)
+        log.error(' Host argument missing. Execute with: script + <hostname>')
         sys.exit()
 
     username, password = Creds()
