@@ -60,7 +60,7 @@ def Main():
                 sys.exit()
             elif x == 2 or 3:
                 print ssh.before
-                log.error(' Host probaby took to long time to respond :(')
+                log.error(' Something is bad :(')
                 sys.exit()
 
         except Exception, e:
