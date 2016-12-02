@@ -1,4 +1,4 @@
-import socket, os, sys, logging, base64, pexpect, getpass
+import socket, os, sys, logging, base64, pexpect, getpass, socket
 
 def TestCON(host, port):
     s = socket.socket()
@@ -30,7 +30,8 @@ def exec_login(host, service, port, username, password):
     ex = ['continue connecting', '(?i)username', '(?i)login:',
           '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT]
     try:
-        log.info(' Connecting to "%s"' % host)
+        ptr = socket.gethostbyaddr(host)
+        log.info(' Connecting to Host: %s  PTR: %s"' % (host, ptr[0]))
         conn = pexpect.spawn('%s %s' % (service, host))
         conn.timeout=10000
         x = conn.expect(ex)
