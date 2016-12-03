@@ -32,7 +32,7 @@ def Creds():
 
 def exec_login(host, service, port, username, password):
     ex = ['continue connecting', '(?i)username', '(?i)login:',
-          '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT]
+          '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT, 'denied']
     try:
         ptr = socket.gethostbyaddr(host)
         arec = socket.getfqdn(host)
@@ -61,8 +61,8 @@ def exec_login(host, service, port, username, password):
         x = conn.expect(ex)
         if x == 3:
             conn.send(password + '\r')
-        elif x == 4 or 5 or 6:
-            log.error(' EoF or timeout @ "%s"' % host)
+        elif x == 4 or 5 or 6 or 7:
+            log.error(' EoF/timeout/denied @ "%s"' % host)
             sys.exit()
         conn.interact()
         sys.exit()
@@ -74,7 +74,7 @@ def Main():
     try:
         host = sys.argv[1]
     except Exception, e:
-        log.error(' Host argument missing. Execute with: script + <hostname>')
+        log.error(' %s. Execute with: script + <hostname>' % e)
         sys.exit()
 
     username, password = Creds()
