@@ -34,6 +34,9 @@ def exec_login(host, service, port, username, password):
         log.info(' Connecting...')
         log.info(' IP:  %s' % ptr[2][0])
         log.info(' PTR: %s' % ptr[0])
+    except Exception, e:
+        log.info('Connecting to %s' % host)
+    try:
         conn = pexpect.spawn('%s %s' % (service, host))
         conn.timeout=10000
         x = conn.expect(ex)
