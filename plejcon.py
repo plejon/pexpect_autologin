@@ -55,7 +55,7 @@ def exec_login(host, service, port, username, password):
             sys.exit()
         elif x == 1 or 2:
             conn.send(username + '\r')
-        elif x == 4 or 5 or 6:
+        elif x == 4 or 5 or 6 or 7:
             log.error(' EoF, timeout or bad sshcrypto @ "%s"' % host)
             sys.exit()
         x = conn.expect(ex)
