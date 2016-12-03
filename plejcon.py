@@ -15,13 +15,14 @@ def TestCON(host, port):
         return False
 
 def Creds():
-    if os.path.isfile('creds.txt') == True:
+    home = os.getenv('HOME')
+    if os.path.join.isfile('%s/creds.txt' % home, 'r') == True:
         u, p = open('creds.txt', 'r').read().split(':')
         username = base64.b64decode(u)
         password = base64.b64decode(p)
         return (username, password)
     else:
-        with open('creds.txt', 'w') as x:
+        with open('%s/creds.txt' % home, 'w') as x:
             print('Cannot find file with creds, enter creds to make one.')
             username = raw_input('username: ')
             password = getpass.getpass('password: ')
