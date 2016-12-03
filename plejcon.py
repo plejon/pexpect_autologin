@@ -1,5 +1,5 @@
 try:
-    import socket, os, sys, logging, base64, pexpect, getpass, socket, adsfsdfds
+    import socket, os, sys, logging, base64, pexpect, getpass, socket
 except Exception, e:
     print(e)
 
