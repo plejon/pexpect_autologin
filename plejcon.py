@@ -70,6 +70,8 @@ def exec_login(host, service, port, username, password):
         sys.exit()
 
 def Main():
+    log = logging.getLogger('plejCON')
+    logging.basicConfig(level=20)
     try:
         host = sys.argv[1]
     except Exception, e:
@@ -85,6 +87,4 @@ def Main():
         log.error(' telnet/ssh not possible: %s' % host)
 
 if __name__ == '__main__':
-    log = logging.getLogger('plejCON')
-    logging.basicConfig(level=10)
     Main()
