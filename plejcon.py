@@ -34,7 +34,9 @@ def exec_login(host, service, port, username, password):
           '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT]
     try:
         ptr = socket.gethostbyaddr(host)
+        arec = socket.getfqdn('sejar0001-rc6')
         log.info(' Connecting...')
+        log.info(' HOST:   %s' % arec)
         log.info(' IP:  %s' % ptr[2][0])
         log.info(' PTR: %s' % ptr[0])
     except:
