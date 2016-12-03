@@ -17,7 +17,7 @@ def TestCON(host, port):
 def Creds():
     home = os.getenv('HOME')
     if os.path.isfile('%s/creds.txt' % home) == True:
-        u, p = open('creds.txt', 'r').read().split(':')
+        u, p = open('%s/creds.txt' % home, 'r').read().split(':')
         username = base64.b64decode(u)
         password = base64.b64decode(p)
         return (username, password)
