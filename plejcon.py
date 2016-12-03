@@ -1,4 +1,7 @@
-import socket, os, sys, logging, base64, pexpect, getpass, socket
+try:
+    import socket, os, sys, logging, base64, pexpect, getpass, socket, adsfsdfds
+except Exception, e:
+    print(e)
 
 def TestCON(host, port):
     s = socket.socket()
