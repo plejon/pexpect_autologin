@@ -35,9 +35,13 @@ def exec_login(host, service, port, username, password):
           '(?i)password', 'diffie-hellman', pexpect.EOF, pexpect.TIMEOUT, 'denied']
     try:
         ptr = socket.gethostbyaddr(host)
-        arec = socket.getfqdn(host)
+        try:
+            arec = socket.getfqdn(host)
+        except:
+            pass
         log.info(' Connecting...')
-        log.info(' HOST: %s' % arec)
+        if 'arec' in locals():
+            log.info(' HOST: %s' % arec)
         log.info(' IP:   %s' % ptr[2][0])
         log.info(' PTR:  %s' % ptr[0])
     except:
