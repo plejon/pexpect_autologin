@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 try:
     import socket, os, sys, logging, base64, pexpect, getpass, socket
 except Exception, e:
