@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import socket, os, sys, pexpect
-from base64 import b64decode, b64encode
+import socket, os, sys, pexpect, getpass
 
 
 def testcon(host, port):
@@ -18,14 +17,13 @@ def creds():
     home = os.getenv('HOME')
     if os.path.isfile(f'{home}/creds.txt'):
         with open(f'{home}/creds.txt', 'r') as c:
-            u, p = c.read().split(':')
-            return b64decode(u), b64decode(p)
+            return c.read().split(':')
     else:
         print('write un/pw for storage in ~/creds.txt')
         u = input('username: ')
-        p = input('password: ')
-        with open(f'{home}/creds.txt', 'w') as c:
-            c.write(f'{b64encode(u)}:{b64encode(p)}')
+        p = getpass.getpass('password: ')
+        with open(os.open(f'{home}/creds.txt', os.O_CREAT | os.O_WRONLY, 0o600), 'w') as c:
+            c.write(f'{u}:{p}')
             return u, p
 
 
@@ -36,7 +34,7 @@ def login(h, s, p, un, pw):
 
     try:
         conn = pexpect.spawn(f'{s} {h}')
-        conn.timeout=10000
+        conn.timeout = 10000
         x = conn.expect(ex)
         if x is 0:
             conn.sendline('yes')
